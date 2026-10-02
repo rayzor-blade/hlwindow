@@ -16,8 +16,9 @@ xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "
 xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "7782fe978c232872da1914e7546eaaacce75c4c3" }
 
 [dependencies]
-hl_abi = { workspace = true }
-hl_xidl = { workspace = true }
+hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
+# The HashLink carriers x-idl adapters share, kept in hlwgpu.
+hl_xidl = { git = "https://github.com/rayzor-blade/hlwgpu.git", rev = "af5927be9b008790f4d92661965ca6715bf930c7" }
 # The generated model names Ash's Future carrier by this crate's path.
 ash_future_abi = { git = "https://github.com/rayzor-blade/ash.git", rev = "ac80cdb17c9fe82a0e86ab893e9d7304d5319fe6" }
 xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "7782fe978c232872da1914e7546eaaacce75c4c3" }
@@ -25,3 +26,10 @@ xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "778
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 winit = "0.30"
 raw-window-handle = "0.6"
+
+# A released hdll is loaded by a VM and never debugged through, so the symbol
+# table is dead weight.
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
