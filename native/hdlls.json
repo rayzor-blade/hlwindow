@@ -1,0 +1,22 @@
+{
+	"linux-x86_64": {
+		"releaseAsset": "xwindow-linux-x86_64.hdll",
+		"packagePath": "native/linux-x86_64/xwindow.hdll"
+	},
+	"linux-aarch64": {
+		"releaseAsset": "xwindow-linux-aarch64.hdll",
+		"packagePath": "native/linux-aarch64/xwindow.hdll"
+	},
+	"macos-aarch64": {
+		"releaseAsset": "xwindow-macos-aarch64.hdll",
+		"packagePath": "native/macos-aarch64/xwindow.hdll"
+	},
+	"macos-x86_64": {
+		"releaseAsset": "xwindow-macos-x86_64.hdll",
+		"packagePath": "native/macos-x86_64/xwindow.hdll"
+	},
+	"windows-x86_64": {
+		"releaseAsset": "xwindow-windows-x86_64.hdll",
+		"packagePath": "native/windows-x86_64/xwindow.hdll"
+	}
+}

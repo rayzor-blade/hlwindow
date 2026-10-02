@@ -1,0 +1,186 @@
+name: release
+
+# A v* tag publishes directly. A manual run validates by default and publishes
+# only when given an explicit release tag.
+on:
+  push:
+    tags: ['v*']
+  schedule:
+    - cron: '37 3 * * *'
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tag to create and publish, for example v2026.10.02; leave empty to validate only'
+        required: false
+        type: string
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  native:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # platform is the key native/hdlls.json and NativeInstall use.
+        include:
+          # x86_64 macOS is cross-compiled from an arm64 runner: the Intel
+          # runners are retired, and a job asking for one waits for ever.
+          - { os: macos-latest,     platform: macos-aarch64,  target: aarch64-apple-darwin,      built: lib, ext: dylib }
+          - { os: macos-latest,     platform: macos-x86_64,   target: x86_64-apple-darwin,       built: lib, ext: dylib }
+          - { os: ubuntu-24.04,     platform: linux-x86_64,   target: x86_64-unknown-linux-gnu,  built: lib, ext: so }
+          - { os: ubuntu-24.04-arm, platform: linux-aarch64,  target: aarch64-unknown-linux-gnu, built: lib, ext: so }
+          - { os: windows-2022,     platform: windows-x86_64, target: x86_64-pc-windows-msvc,    built: "",  ext: dll }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: release-${{ matrix.platform }}
+
+      # winit reaches X11 and Wayland through these.
+      - name: Install the windowing headers
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev \
+            libxi-dev libxcursor-dev
+
+      # MSVC will not leave a symbol undefined in a DLL, so xwindow.hdll has
+      # to be linked against the VM's import library. Only the VM is built;
+      # its optional libraries want SDL and the rest, and cmake looks for
+      # those while configuring.
+      - name: Build HashLink for its import library
+        if: startsWith(matrix.os, 'windows')
+        shell: bash
+        run: |
+          git clone --depth 1 https://github.com/HaxeFoundation/hashlink.git /tmp/hashlink
+          cmake -S /tmp/hashlink -B /tmp/hashlink/build -DWITH_VM=ON \
+            -DWITH_FMT=OFF -DWITH_HEAPS=OFF -DWITH_OPENAL=OFF -DWITH_SDL=OFF \
+            -DWITH_SQLITE=OFF -DWITH_SSL=OFF -DWITH_UI=OFF -DWITH_UV=OFF \
+            -DWITH_VIDEO=OFF
+          cmake --build /tmp/hashlink/build --config Release --target libhl
+          libdir=$(dirname "$(find /tmp/hashlink/build -name 'libhl.lib' | head -1)")
+          echo "found libhl.lib in $libdir"
+          echo "HL_LIB_DIR=$libdir" >> "$GITHUB_ENV"
+
+      - name: Build
+        shell: bash
+        run: cargo build --release --target ${{ matrix.target }}
+
+      # The release asset name native/hdlls.json expects.
+      - name: Name it as the manifest expects
+        shell: bash
+        run: |
+          mkdir -p out
+          cp "target/${{ matrix.target }}/release/${{ matrix.built }}hlwindow.${{ matrix.ext }}" \
+            "out/xwindow-${{ matrix.platform }}.hdll"
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hdll-${{ matrix.platform }}
+          path: out/
+          if-no-files-found: error
+
+  wasm:
+    name: wasm side module
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # A side module is position-independent and the shipped core and std are
+      # not, so they are rebuilt. That needs nightly and rust-src.
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-wasip1-threads
+          components: rust-src
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: release-wasm
+
+      - name: Build
+        run: scripts/build_wasm.sh "$PWD/out"
+
+      # Nothing inside the module calls a primitive: the program does, by
+      # name, after loading it. If one is missing, it is missing quietly.
+      - name: Every primitive is exported
+        run: |
+          missing=0
+          for p in $(sed -n 's/.*@:hlNative("xwindow", "\([^"]*\)").*/hlp_\1/p' haxe/window/*.hx | sort -u); do
+            strings out/xwindow.wasm | grep -q "$p" || { echo "::error::$p is not exported"; missing=1; }
+          done
+          exit $missing
+
+      - name: Check and collect
+        run: |
+          node --check out/xwindow.mjs
+          node --check out/xwindow_wire.mjs
+          cp -r haxe out/
+          cp haxelib.json LICENSE README.md out/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hlwindow-wasm-ash
+          path: out/
+
+  publish:
+    name: publish
+    needs: [native, wasm]
+    if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != '' || github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ github.event_name == 'schedule' && 0 || 1 }}
+
+      - name: Point the nightly tag at this build
+        if: github.event_name == 'schedule'
+        run: |
+          git tag --force nightly "$GITHUB_SHA"
+          git push --force origin refs/tags/nightly
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hdll-*
+          path: release
+          merge-multiple: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: hlwindow-wasm-ash
+          path: wasm
+
+      # haxelib.json has no install hook. Every platform's hdll goes in the
+      # ZIP so `haxelib install` extracts them with the Haxe sources;
+      # extraParams.hxml stages the host's copy beside the generated bytecode.
+      - name: Package for Haxelib
+        run: python3 scripts/package_haxelib.py release
+
+      - name: Archive the wasm side module
+        run: |
+          (cd wasm && zip -qr ../release/hlwindow-wasm-ash.zip .)
+          ls -la release
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event_name == 'schedule' && 'nightly' || inputs.release_tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
+          files: |
+            release/*.zip
+            release/*.hdll
+          generate_release_notes: true
+          prerelease: ${{ github.event_name == 'schedule' }}
+          make_latest: ${{ github.event_name == 'schedule' && 'false' || 'true' }}

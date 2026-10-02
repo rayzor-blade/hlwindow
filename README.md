@@ -8,6 +8,19 @@ HashLink and Ash. It provides the Haxe `window` package, loaded as
 the backend for the target, and writes the Haxe API into `haxe/window`. The
 Haxe sources are committed, since whoever uses them is not building the crate.
 
+## Installing
+
+Install the `hlwindow-<version>.zip` from a release:
+
+    haxelib install hlwindow-0.1.0.zip
+
+and compile with `-lib hlwindow`. The ZIP carries `xwindow.hdll` for every
+desktop platform; `extraParams.hxml` copies the host's beside the generated
+`.hl`. A source checkout has no hdlls, so `-lib` on one fails until you define
+`hlwindow_no_hdll` and put `xwindow.hdll` where HashLink finds it yourself.
+
+The browser side module is the separate `hlwindow-wasm-ash.zip`.
+
 ## Building
 
     cargo build --release        # target/release/libhlwindow.{dylib,so} / hlwindow.dll
