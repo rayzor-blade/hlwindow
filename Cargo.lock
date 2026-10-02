@@ -417,7 +417,7 @@ source = "git+https://github.com/rayzor-blade/hl_abi#78c5c70d3da5aedc5b1d4550c73
 [[package]]
 name = "hl_xidl"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/hlwgpu.git?rev=af5927be9b008790f4d92661965ca6715bf930c7#af5927be9b008790f4d92661965ca6715bf930c7"
+source = "git+https://github.com/rayzor-blade/hlwgpu.git?rev=9fbcffd920f45d4c1683667a39340d25dbce266c#9fbcffd920f45d4c1683667a39340d25dbce266c"
 dependencies = [
  "ash_future_abi",
  "hl_abi 0.1.0 (git+https://github.com/rayzor-blade/hl_abi)",
