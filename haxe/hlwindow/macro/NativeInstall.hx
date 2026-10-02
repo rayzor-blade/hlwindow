@@ -15,7 +15,7 @@ class NativeInstall {
 		if (!Context.defined("hl") || Context.defined("hlc") || Context.defined("hlwindow_no_hdll")) return;
 		Context.onAfterGenerate(() -> {
 			var platform = hostPlatform();
-			// haxe/hlwindow/macro/NativeInstall.hx, four levels below the haxelib root.
+			// The haxelib root holds haxe/hlwindow/macro/NativeInstall.hx.
 			var module = Context.resolvePath("hlwindow/macro/NativeInstall.hx");
 			var root = Path.directory(Path.directory(Path.directory(Path.directory(module))));
 			var manifest:Dynamic = Json.parse(File.getContent(Path.join([root, "native/hdlls.json"])));
