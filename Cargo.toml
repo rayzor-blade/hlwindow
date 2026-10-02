@@ -11,9 +11,16 @@ publish = false
 # side module is linked from.
 crate-type = ["cdylib", "staticlib", "rlib"]
 
+# winit on Android needs the activity the host's Java side starts; they
+# cannot both be on. A host with a GameActivity turns the default off.
+[features]
+default = ["android-native-activity"]
+android-native-activity = ["winit/android-native-activity"]
+android-game-activity = ["winit/android-game-activity"]
+
 [build-dependencies]
-xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "7782fe978c232872da1914e7546eaaacce75c4c3" }
-xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "7782fe978c232872da1914e7546eaaacce75c4c3" }
+xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "24ff346a46dccb215e68e99855d52d2d5233386c" }
+xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "24ff346a46dccb215e68e99855d52d2d5233386c" }
 
 [dependencies]
 hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
@@ -21,7 +28,7 @@ hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
 hl_xidl = { git = "https://github.com/rayzor-blade/hlwgpu.git", rev = "9fbcffd920f45d4c1683667a39340d25dbce266c" }
 # The generated model names Ash's Future carrier by this crate's path.
 ash_future_abi = { git = "https://github.com/rayzor-blade/ash.git", rev = "ac80cdb17c9fe82a0e86ab893e9d7304d5319fe6" }
-xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "7782fe978c232872da1914e7546eaaacce75c4c3" }
+xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "24ff346a46dccb215e68e99855d52d2d5233386c" }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 winit = "0.30"

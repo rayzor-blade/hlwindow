@@ -30,6 +30,14 @@ mod backend {
     include!(concat!(env!("OUT_DIR"), "/xwindow_backend/native.rs"));
 }
 
+/// The host's hook, for a host that builds the event loop (on Android, with
+/// its `AndroidApp`) or runs it and gives the program turns (on iOS), with
+/// the winit it is built from.
+#[cfg(not(target_family = "wasm"))]
+pub use backend::{Drive, attach};
+#[cfg(not(target_family = "wasm"))]
+pub use winit;
+
 #[cfg(target_family = "wasm")]
 #[allow(dead_code, non_camel_case_types, unused_variables)]
 mod wire {

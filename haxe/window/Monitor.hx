@@ -10,6 +10,8 @@ abstract Monitor(Int) from Int to Int {
 	public inline function y():Int return MonitorNative.y(this);
 	public inline function scaleFactor():Float return MonitorNative.scaleFactor(this);
 	public inline function refreshRate():Int return MonitorNative.refreshRate(this);
+	public inline function videoModeCount():Int return MonitorNative.videoModeCount(this);
+	public inline function videoMode(index:Int):VideoMode return MonitorNative.videoMode(this, index);
 }
 
 private extern class MonitorNative {
@@ -29,4 +31,8 @@ private extern class MonitorNative {
 	public static function scaleFactor(self:Int):Float;
 	@:hlNative("xwindow", "monitor_refresh_rate")
 	public static function refreshRate(self:Int):Int;
+	@:hlNative("xwindow", "monitor_video_mode_count")
+	public static function videoModeCount(self:Int):Int;
+	@:hlNative("xwindow", "monitor_video_mode")
+	public static function videoMode(self:Int, index:Int):VideoMode;
 }

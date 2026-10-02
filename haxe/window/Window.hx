@@ -230,6 +230,8 @@ abstract Window(Int) from Int to Int {
 	public inline function outerHeight():Int return WindowNative.outerHeight(this);
 	public inline function x():Int return WindowNative.x(this);
 	public inline function y():Int return WindowNative.y(this);
+	public inline function innerX():Int return WindowNative.innerX(this);
+	public inline function innerY():Int return WindowNative.innerY(this);
 	public inline function scaleFactor():Float return WindowNative.scaleFactor(this);
 	public inline function title():String { var value = WindowNative.title(this); return value == null ? null : @:privateAccess String.fromUCS2(value); };
 	public inline function hasFocus():Bool return WindowNative.hasFocus(this);
@@ -258,6 +260,14 @@ abstract Window(Int) from Int to Int {
 	public inline function setBlur(blur:Bool):Void WindowNative.setBlur(this, blur);
 	public inline function setContentProtected(protected:Bool):Void WindowNative.setContentProtected(this, protected);
 	public inline function setScaleSizing(sizing:ScaleSizing):Void WindowNative.setScaleSizing(this, sizing);
+	public inline function setTheme(theme:Null<Theme>):Void WindowNative.setThemeNative(this, (theme == null ? 0x80000000 : (theme : Int)));
+	public inline function setIcon(rgba:haxe.io.Bytes, width:Int, height:Int):Void WindowNative.setIcon(this, rgba, width, height);
+	public inline function setResizeIncrements(width:Int, height:Int):Void WindowNative.setResizeIncrements(this, width, height);
+	public inline function setEnabledButtons(close:Bool, minimize:Bool, maximize:Bool):Void WindowNative.setEnabledButtons(this, close, minimize, maximize);
+	public inline function setExclusiveFullscreen(mode:VideoMode):Void WindowNative.setExclusiveFullscreen(this, mode);
+	public inline function dragWindow():Bool return WindowNative.dragWindow(this);
+	public inline function dragResizeWindow(direction:ResizeDirection):Bool return WindowNative.dragResizeWindow(this, direction);
+	public inline function showWindowMenu(x:Float, y:Float):Void WindowNative.showWindowMenu(this, x, y);
 	public inline function requestRedraw():Void WindowNative.requestRedraw(this);
 	public inline function focus():Void WindowNative.focus(this);
 	public inline function requestAttention(attention:Attention):Void WindowNative.requestAttention(this, attention);
@@ -265,8 +275,10 @@ abstract Window(Int) from Int to Int {
 	public inline function setCursorImage(rgba:haxe.io.Bytes, width:Int, height:Int, hotX:Int, hotY:Int):Void WindowNative.setCursorImage(this, rgba, width, height, hotX, hotY);
 	public inline function setCursorVisible(visible:Bool):Void WindowNative.setCursorVisible(this, visible);
 	public inline function setCursorGrab(grab:CursorGrab):Bool return WindowNative.setCursorGrab(this, grab);
+	public inline function setCursorHittest(hittest:Bool):Bool return WindowNative.setCursorHittest(this, hittest);
 	public inline function setCursorPosition(x:Float, y:Float):Bool return WindowNative.setCursorPosition(this, x, y);
 	public inline function setImeAllowed(allowed:Bool):Void WindowNative.setImeAllowed(this, allowed);
+	public inline function setImePurpose(purpose:ImePurpose):Void WindowNative.setImePurpose(this, purpose);
 	public inline function setImeCursorArea(x:Float, y:Float, width:Float, height:Float):Void WindowNative.setImeCursorArea(this, x, y, width, height);
 	public inline function requestActivationToken():haxe.Int64 return WindowNative.requestActivationToken(this);
 	public inline function currentMonitor():Monitor return WindowNative.currentMonitor(this);
@@ -585,6 +597,10 @@ private extern class WindowNative {
 	public static function x(self:Int):Int;
 	@:hlNative("xwindow", "window_y")
 	public static function y(self:Int):Int;
+	@:hlNative("xwindow", "window_inner_x")
+	public static function innerX(self:Int):Int;
+	@:hlNative("xwindow", "window_inner_y")
+	public static function innerY(self:Int):Int;
 	@:hlNative("xwindow", "window_scale_factor")
 	public static function scaleFactor(self:Int):Float;
 	@:hlNative("xwindow", "window_title")
@@ -641,6 +657,22 @@ private extern class WindowNative {
 	public static function setContentProtected(self:Int, protected:Bool):Void;
 	@:hlNative("xwindow", "window_set_scale_sizing")
 	public static function setScaleSizing(self:Int, sizing:ScaleSizing):Void;
+	@:hlNative("xwindow", "window_set_theme_native")
+	public static function setThemeNative(self:Int, theme:Int):Void;
+	@:hlNative("xwindow", "window_set_icon")
+	public static function setIcon(self:Int, rgba:haxe.io.Bytes, width:Int, height:Int):Void;
+	@:hlNative("xwindow", "window_set_resize_increments")
+	public static function setResizeIncrements(self:Int, width:Int, height:Int):Void;
+	@:hlNative("xwindow", "window_set_enabled_buttons")
+	public static function setEnabledButtons(self:Int, close:Bool, minimize:Bool, maximize:Bool):Void;
+	@:hlNative("xwindow", "window_set_exclusive_fullscreen")
+	public static function setExclusiveFullscreen(self:Int, mode:VideoMode):Void;
+	@:hlNative("xwindow", "window_drag_window")
+	public static function dragWindow(self:Int):Bool;
+	@:hlNative("xwindow", "window_drag_resize_window")
+	public static function dragResizeWindow(self:Int, direction:ResizeDirection):Bool;
+	@:hlNative("xwindow", "window_show_window_menu")
+	public static function showWindowMenu(self:Int, x:Float, y:Float):Void;
 	@:hlNative("xwindow", "window_request_redraw")
 	public static function requestRedraw(self:Int):Void;
 	@:hlNative("xwindow", "window_focus")
@@ -655,10 +687,14 @@ private extern class WindowNative {
 	public static function setCursorVisible(self:Int, visible:Bool):Void;
 	@:hlNative("xwindow", "window_set_cursor_grab")
 	public static function setCursorGrab(self:Int, grab:CursorGrab):Bool;
+	@:hlNative("xwindow", "window_set_cursor_hittest")
+	public static function setCursorHittest(self:Int, hittest:Bool):Bool;
 	@:hlNative("xwindow", "window_set_cursor_position")
 	public static function setCursorPosition(self:Int, x:Float, y:Float):Bool;
 	@:hlNative("xwindow", "window_set_ime_allowed")
 	public static function setImeAllowed(self:Int, allowed:Bool):Void;
+	@:hlNative("xwindow", "window_set_ime_purpose")
+	public static function setImePurpose(self:Int, purpose:ImePurpose):Void;
 	@:hlNative("xwindow", "window_set_ime_cursor_area")
 	public static function setImeCursorArea(self:Int, x:Float, y:Float, width:Float, height:Float):Void;
 	@:hlNative("xwindow", "window_request_activation_token")

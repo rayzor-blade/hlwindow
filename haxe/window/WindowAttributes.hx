@@ -24,6 +24,14 @@ abstract WindowAttributes(hl.Abstract<"xwindow_WindowAttributes">) {
 	public inline function windowLevel(value:WindowLevel):Void WindowAttributesNative.windowLevel(this, value);
 	public inline function theme(value:Theme):Void WindowAttributesNative.theme(this, value);
 	public inline function scaleSizing(value:ScaleSizing):Void WindowAttributesNative.scaleSizing(this, value);
+	public inline function icon(value:haxe.io.Bytes):Void WindowAttributesNative.icon(this, value);
+	public inline function iconWidth(value:Int):Void WindowAttributesNative.iconWidth(this, value);
+	public inline function iconHeight(value:Int):Void WindowAttributesNative.iconHeight(this, value);
+	public inline function resizeIncrementWidth(value:Int):Void WindowAttributesNative.resizeIncrementWidth(this, value);
+	public inline function resizeIncrementHeight(value:Int):Void WindowAttributesNative.resizeIncrementHeight(this, value);
+	public inline function closeButton(value:Bool):Void WindowAttributesNative.closeButton(this, value);
+	public inline function minimizeButton(value:Bool):Void WindowAttributesNative.minimizeButton(this, value);
+	public inline function maximizeButton(value:Bool):Void WindowAttributesNative.maximizeButton(this, value);
 }
 
 private extern class WindowAttributesNative {
@@ -71,4 +79,20 @@ private extern class WindowAttributesNative {
 	public static function theme(self:hl.Abstract<"xwindow_WindowAttributes">, value:Theme):Void;
 	@:hlNative("xwindow", "window_attributes_scale_sizing")
 	public static function scaleSizing(self:hl.Abstract<"xwindow_WindowAttributes">, value:ScaleSizing):Void;
+	@:hlNative("xwindow", "window_attributes_icon")
+	public static function icon(self:hl.Abstract<"xwindow_WindowAttributes">, value:haxe.io.Bytes):Void;
+	@:hlNative("xwindow", "window_attributes_icon_width")
+	public static function iconWidth(self:hl.Abstract<"xwindow_WindowAttributes">, value:Int):Void;
+	@:hlNative("xwindow", "window_attributes_icon_height")
+	public static function iconHeight(self:hl.Abstract<"xwindow_WindowAttributes">, value:Int):Void;
+	@:hlNative("xwindow", "window_attributes_resize_increment_width")
+	public static function resizeIncrementWidth(self:hl.Abstract<"xwindow_WindowAttributes">, value:Int):Void;
+	@:hlNative("xwindow", "window_attributes_resize_increment_height")
+	public static function resizeIncrementHeight(self:hl.Abstract<"xwindow_WindowAttributes">, value:Int):Void;
+	@:hlNative("xwindow", "window_attributes_close_button")
+	public static function closeButton(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
+	@:hlNative("xwindow", "window_attributes_minimize_button")
+	public static function minimizeButton(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
+	@:hlNative("xwindow", "window_attributes_maximize_button")
+	public static function maximizeButton(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
 }
