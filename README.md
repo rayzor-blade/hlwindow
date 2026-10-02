@@ -10,11 +10,18 @@ Haxe sources are committed, since whoever uses them is not building the crate.
 
 ## Installing
 
-Install the `hlwindow-<version>.zip` from a release:
+Install `hlwindow.zip` from a [release](https://github.com/rayzor-blade/hlwindow/releases).
+The rolling `nightly` is rebuilt daily when `main` has changed, and the
+latest is always at
+<https://github.com/rayzor-blade/hlwindow/releases/download/nightly/hlwindow.zip>:
 
-    haxelib install hlwindow-0.1.0.zip
+    haxelib install hlwindow.zip
 
-and compile with `-lib hlwindow`. The ZIP carries `xwindow.hdll` for every
+Installing a newer nightly the same way replaces the old one. A versioned
+release takes its version from its tag; a nightly keeps the one in
+`haxelib.json`, which changes only when xwindow's API does.
+
+Compile with `-lib hlwindow`. The ZIP carries `xwindow.hdll` for every
 desktop platform; `extraParams.hxml` copies the host's beside the generated
 `.hl`. A source checkout has no hdlls, so `-lib` on one fails until you define
 `hlwindow_no_hdll` and put `xwindow.hdll` where HashLink finds it yourself.
