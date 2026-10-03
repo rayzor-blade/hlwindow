@@ -4,6 +4,7 @@ package window;
 abstract Window(Int) from Int to Int {
 	public static inline function open(attributes:WindowAttributes):Window return WindowNative.open(attributes);
 	public inline function valid():Bool return WindowNative.valid(this);
+	public static inline function listenDeviceEvents(when:DeviceEvents):Void WindowNative.listenDeviceEvents(when);
 	static inline function eventMouseInputButton():MouseButton {
 		return switch (WindowNative.eventMouseInputButtonVariant()) {
 			case 1: MouseButton.Right;
@@ -295,6 +296,8 @@ private extern class WindowNative {
 	public static function open(attributes:WindowAttributes):Window;
 	@:hlNative("xwindow", "window_valid")
 	public static function valid(self:Int):Bool;
+	@:hlNative("xwindow", "window_listen_device_events")
+	public static function listenDeviceEvents(when:DeviceEvents):Void;
 	@:hlNative("xwindow", "window_poll_variant")
 	public static function pollVariant(self:Int):Int;
 	@:hlNative("xwindow", "window_event_resized_width")

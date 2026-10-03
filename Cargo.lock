@@ -1795,12 +1795,12 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 [[package]]
 name = "xwindow-backend"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=ff6bfc529ba16172b89019e2a4e2abda3039640e#ff6bfc529ba16172b89019e2a4e2abda3039640e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=12362a9f367237bc62a231acff59e8e82a0a75ed#12362a9f367237bc62a231acff59e8e82a0a75ed"
 
 [[package]]
 name = "xwindow-bindgen"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=ff6bfc529ba16172b89019e2a4e2abda3039640e#ff6bfc529ba16172b89019e2a4e2abda3039640e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=12362a9f367237bc62a231acff59e8e82a0a75ed#12362a9f367237bc62a231acff59e8e82a0a75ed"
 dependencies = [
  "x_idl",
  "xwindow-core",
@@ -1809,7 +1809,7 @@ dependencies = [
 [[package]]
 name = "xwindow-core"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=ff6bfc529ba16172b89019e2a4e2abda3039640e#ff6bfc529ba16172b89019e2a4e2abda3039640e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=12362a9f367237bc62a231acff59e8e82a0a75ed#12362a9f367237bc62a231acff59e8e82a0a75ed"
 dependencies = [
  "raw-window-handle",
 ]
