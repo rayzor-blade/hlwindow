@@ -39,8 +39,10 @@ raw-window-handle = "0.6"
 window_clipboard = "0.5"
 
 # A released hdll is loaded by a VM and never debugged through, so the symbol
-# table is dead weight.
+# table is dead weight. The window backend has no hot loops, so it is built
+# for size; scripts/size_report.sh shows what remains.
 [profile.release]
 lto = true
 codegen-units = 1
 strip = true
+opt-level = "z"

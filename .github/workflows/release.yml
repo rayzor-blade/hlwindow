@@ -114,7 +114,9 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cargo build --release --target ${{ matrix.target }}
+        # The hdll alone: built beside the staticlib and rlib, it is not
+        # wholly link-time optimized and comes out larger.
+        run: cargo rustc --release --lib --crate-type cdylib --target ${{ matrix.target }}
 
       # The release asset name native/hdlls.json expects.
       - name: Name it as the manifest expects
@@ -174,9 +176,9 @@ jobs:
         shell: bash
         run: |
           if [ "${{ startsWith(matrix.name, 'android') }}" = "true" ]; then
-            cargo ndk -t ${{ matrix.target }} build --release --locked --features android-main
+            cargo ndk -t ${{ matrix.target }} rustc --release --locked --lib --crate-type staticlib --features android-main
           else
-            cargo build --release --locked --target ${{ matrix.target }}
+            cargo rustc --release --locked --lib --crate-type staticlib --target ${{ matrix.target }}
           fi
 
       - name: Collect

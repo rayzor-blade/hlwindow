@@ -48,3 +48,42 @@ jobs:
             echo "::error::a build changed committed files; commit what build.rs wrote"
             exit 1
           }
+
+  size:
+    name: size (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: size-${{ matrix.os }}
+
+      - name: Install the windowing headers
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev \
+            libxi-dev libxcursor-dev
+
+      - name: Install cargo-bloat
+        run: cargo install cargo-bloat --locked
+
+      # The released library's size and its largest crates, in the run's
+      # summary.
+      - name: Size report
+        run: |
+          scripts/size_report.sh 25 | tee size.txt
+          {
+            echo "### ${{ matrix.os }}"
+            echo '```'
+            cat size.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

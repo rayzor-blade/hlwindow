@@ -17,6 +17,7 @@ rm -f "$out/xwindow.wasm" "$out/xwindow.mjs" "$out/xwindow_wire.mjs"
 # reports among its JSON messages.
 messages=$(
   CARGO_PROFILE_RELEASE_LTO=false \
+  CARGO_PROFILE_RELEASE_OPT_LEVEL=3 \
   RUSTFLAGS="-C relocation-model=pic -C target-feature=+mutable-globals -C panic=abort" \
     cargo +nightly rustc -p hlwindow --lib --crate-type staticlib \
       --target wasm32-wasip1-threads --release \

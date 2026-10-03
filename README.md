@@ -58,11 +58,15 @@ android-game-activity`.
 
 ## Building
 
-    cargo build --release        # target/release/libhlwindow.{dylib,so} / hlwindow.dll
-    scripts/build_wasm.sh        # target/wasm/xwindow.wasm, xwindow.mjs, xwindow_wire.mjs
+    cargo rustc --release --lib --crate-type cdylib   # target/release/libhlwindow.{dylib,so} / hlwindow.dll
+    scripts/build_wasm.sh                             # target/wasm/xwindow.wasm, xwindow.mjs, xwindow_wire.mjs
+    scripts/size_report.sh                            # the hdll's size and largest crates (cargo-bloat)
 
-The native library is renamed to `xwindow.hdll` for HashLink. The wasm build
-needs a nightly toolchain with `rust-src`.
+The native library is renamed to `xwindow.hdll` for HashLink. Built alone,
+as above, it is link-time optimized whole; `cargo build` also makes the
+staticlib and rlib, and its hdll comes out larger. A mobile archive is built
+the same way with `--crate-type staticlib`. The wasm build needs a nightly
+toolchain with `rust-src`.
 
 ## Surfaces
 
