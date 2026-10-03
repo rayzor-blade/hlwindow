@@ -40,14 +40,20 @@ per target:
 | `hlwindow-android-arm.zip` | `armv7-linux-androideabi` |
 | `hlwindow-android-x64.zip` | `x86_64-linux-android` |
 
-On a phone the host hands the window backend its event loop before the
-program opens a window, as xwindow's CONTRIBUTING.md describes: on Android
-with the `AndroidApp` from `android_main`, and on iOS by running the loop and
-giving the program turns. That hook, `hlwindow::attach`, is Rust, so a host
-reaches it by depending on hlwindow as a crate; the archives have no C entry
-for it yet (git-bug ddb53e64979bbcb0abec706582015a66261818edc9481c44f7fb8ecd14aff206).
-The Android archives are built with winit's NativeActivity; a host with a
-GameActivity builds hlwindow with `--no-default-features --features
+Each ZIP has `include/xwindow.h`, the event-loop hook for an app in C, as
+xwindow's CONTRIBUTING.md describes:
+
+- On iOS the app's `main` calls `xwindow_run_turns`, which runs the loop and
+  gives the program its turns; it never returns.
+- On Android the archive's `android_main` keeps the activity's app and calls
+  `xwindow_main`, which the app defines as its program. That program calls
+  `xwindow_attach_pump` or `xwindow_run_turns`, or simply opens a window,
+  which pumps.
+
+The Android archives are built with winit's NativeActivity and the
+`android-main` feature. A Rust host depends on hlwindow as a crate, defines
+its own `android_main`, and calls `hlwindow::attach`; a host on a
+GameActivity builds with `--no-default-features --features
 android-game-activity`.
 
 ## Building

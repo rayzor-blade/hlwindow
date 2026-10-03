@@ -38,6 +38,19 @@ pub use backend::{Drive, attach};
 #[cfg(not(target_family = "wasm"))]
 pub use winit;
 
+/// For an app that links the library from C on Android: winit's activity
+/// calls this, which keeps the app for the backend and starts the app's
+/// program, `xwindow_main` (include/xwindow.h).
+#[cfg(all(target_os = "android", feature = "android-main"))]
+#[unsafe(no_mangle)]
+fn android_main(app: winit::platform::android::activity::AndroidApp) {
+    unsafe extern "C" {
+        fn xwindow_main();
+    }
+    backend::android_app(app);
+    unsafe { xwindow_main() }
+}
+
 #[cfg(target_family = "wasm")]
 #[allow(dead_code, non_camel_case_types, unused_variables)]
 mod wire {

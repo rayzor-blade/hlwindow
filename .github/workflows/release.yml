@@ -166,14 +166,15 @@ jobs:
         run: cargo install cargo-ndk --locked
 
       # A mobile app links HashLink and its libraries statically, so what
-      # ships is the archive rather than a loadable hdll. Android builds with
-      # the default native activity; a host on a GameActivity rebuilds with
-      # android-game-activity.
+      # ships is the archive rather than a loadable hdll, with the C header
+      # for the event-loop hook. Android builds with the default native
+      # activity and defines android_main for the app's xwindow_main; a host
+      # on a GameActivity, or in Rust, builds the library itself.
       - name: Build
         shell: bash
         run: |
           if [ "${{ startsWith(matrix.name, 'android') }}" = "true" ]; then
-            cargo ndk -t ${{ matrix.target }} build --release --locked
+            cargo ndk -t ${{ matrix.target }} build --release --locked --features android-main
           else
             cargo build --release --locked --target ${{ matrix.target }}
           fi
@@ -183,6 +184,7 @@ jobs:
         run: |
           mkdir -p out
           cp "target/${{ matrix.target }}/release/libhlwindow.a" out/
+          cp -r include out/
           cp LICENSE README.md out/
           ls -la out
 
