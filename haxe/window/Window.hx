@@ -15,6 +15,17 @@ abstract Window(Int) from Int to Int {
 		return readOptionalText(WindowNative.clipboardTextVariant());
 	}
 	public static inline function setClipboardText(text:String):Void WindowNative.setClipboardText(text);
+	public static inline function clipboardTypeCount():Int return WindowNative.clipboardTypeCount();
+	public static inline function clipboardType(index:Int):String { var value = WindowNative.clipboardType(index); return value == null ? null : @:privateAccess String.fromUCS2(value); };
+	static inline function readOptionalBytes(index:Int):OptionalBytes {
+		return switch (index) {
+			case 1: OptionalBytes.Some(XidlBytes.take(WindowNative.optionalBytesSomeBytes()));
+			default: OptionalBytes.None;
+		};
+	}
+	public static inline function clipboardData(mimeType:String):OptionalBytes {
+		return readOptionalBytes(WindowNative.clipboardDataVariant(mimeType));
+	}
 	static inline function eventMouseInputButton():MouseButton {
 		return switch (WindowNative.eventMouseInputButtonVariant()) {
 			case 1: MouseButton.Right;
@@ -314,6 +325,14 @@ private extern class WindowNative {
 	public static function optionalTextSomeText():hl.Bytes;
 	@:hlNative("xwindow", "window_set_clipboard_text")
 	public static function setClipboardText(text:String):Void;
+	@:hlNative("xwindow", "window_clipboard_type_count")
+	public static function clipboardTypeCount():Int;
+	@:hlNative("xwindow", "window_clipboard_type")
+	public static function clipboardType(index:Int):hl.Bytes;
+	@:hlNative("xwindow", "window_clipboard_data_variant")
+	public static function clipboardDataVariant(mimeType:String):Int;
+	@:hlNative("xwindow", "window_optional_bytes_some_bytes")
+	public static function optionalBytesSomeBytes():hl.Abstract<"xwindow_buffer_result">;
 	@:hlNative("xwindow", "window_poll_variant")
 	public static function pollVariant(self:Int):Int;
 	@:hlNative("xwindow", "window_event_resized_width")
