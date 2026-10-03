@@ -35,4 +35,5 @@ enum Event {
 	Resumed;
 	Suspended;
 	MemoryWarning;
+	Paste;
 }

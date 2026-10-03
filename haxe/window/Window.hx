@@ -236,6 +236,7 @@ abstract Window(Int) from Int to Int {
 			case 30: Event.Resumed;
 			case 31: Event.Suspended;
 			case 32: Event.MemoryWarning;
+			case 33: Event.Paste;
 			default: Event.None;
 		};
 	}

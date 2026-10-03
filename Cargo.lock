@@ -298,7 +298,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1052,7 +1052,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys 0.12.1",
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1573,7 +1573,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.52.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
@@ -1802,12 +1802,12 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 [[package]]
 name = "xwindow-backend"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=93034bf2a05f663697b6424fb689e4477ff34340#93034bf2a05f663697b6424fb689e4477ff34340"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90#1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90"
 
 [[package]]
 name = "xwindow-bindgen"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=93034bf2a05f663697b6424fb689e4477ff34340#93034bf2a05f663697b6424fb689e4477ff34340"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90#1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90"
 dependencies = [
  "x_idl",
  "xwindow-core",
@@ -1816,7 +1816,7 @@ dependencies = [
 [[package]]
 name = "xwindow-clipboard"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=93034bf2a05f663697b6424fb689e4477ff34340#93034bf2a05f663697b6424fb689e4477ff34340"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90#1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90"
 dependencies = [
  "calloop",
  "clipboard-win",
@@ -1834,7 +1834,7 @@ dependencies = [
 [[package]]
 name = "xwindow-core"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=93034bf2a05f663697b6424fb689e4477ff34340#93034bf2a05f663697b6424fb689e4477ff34340"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90#1e503190c7d75d915d1d255e7b4e1bf9d3f0ef90"
 dependencies = [
  "raw-window-handle",
 ]
