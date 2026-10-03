@@ -291,6 +291,7 @@ abstract Window(Int) from Int to Int {
 	public inline function dragResizeWindow(direction:ResizeDirection):Bool return WindowNative.dragResizeWindow(this, direction);
 	public inline function showWindowMenu(x:Float, y:Float):Void WindowNative.showWindowMenu(this, x, y);
 	public inline function requestRedraw():Void WindowNative.requestRedraw(this);
+	public inline function prePresentNotify():Void WindowNative.prePresentNotify(this);
 	public inline function focus():Void WindowNative.focus(this);
 	public inline function requestAttention(attention:Attention):Void WindowNative.requestAttention(this, attention);
 	public inline function setCursorIcon(icon:CursorIcon):Void WindowNative.setCursorIcon(this, icon);
@@ -713,6 +714,8 @@ private extern class WindowNative {
 	public static function showWindowMenu(self:Int, x:Float, y:Float):Void;
 	@:hlNative("xwindow", "window_request_redraw")
 	public static function requestRedraw(self:Int):Void;
+	@:hlNative("xwindow", "window_pre_present_notify")
+	public static function prePresentNotify(self:Int):Void;
 	@:hlNative("xwindow", "window_focus")
 	public static function focus(self:Int):Void;
 	@:hlNative("xwindow", "window_request_attention")
