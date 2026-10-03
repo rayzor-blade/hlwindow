@@ -131,6 +131,67 @@ jobs:
           path: out/
           if-no-files-found: error
 
+  mobile:
+    name: ${{ matrix.name }}
+    needs: plan
+    if: needs.plan.outputs.build == 'true'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-latest,  name: ios-arm64,     target: aarch64-apple-ios }
+          - { os: macos-latest,  name: ios-simulator, target: aarch64-apple-ios-sim }
+          - { os: ubuntu-24.04,  name: android-arm64, target: aarch64-linux-android }
+          - { os: ubuntu-24.04,  name: android-arm,   target: armv7-linux-androideabi }
+          - { os: ubuntu-24.04,  name: android-x64,   target: x86_64-linux-android }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: release-${{ matrix.name }}
+
+      - uses: nttld/setup-ndk@v1
+        if: startsWith(matrix.name, 'android')
+        with:
+          ndk-version: r27
+
+      - name: Install cargo-ndk
+        if: startsWith(matrix.name, 'android')
+        run: cargo install cargo-ndk --locked
+
+      # A mobile app links HashLink and its libraries statically, so what
+      # ships is the archive rather than a loadable hdll. Android builds with
+      # the default native activity; a host on a GameActivity rebuilds with
+      # android-game-activity.
+      - name: Build
+        shell: bash
+        run: |
+          if [ "${{ startsWith(matrix.name, 'android') }}" = "true" ]; then
+            cargo ndk -t ${{ matrix.target }} build --release --locked
+          else
+            cargo build --release --locked --target ${{ matrix.target }}
+          fi
+
+      - name: Collect
+        shell: bash
+        run: |
+          mkdir -p out
+          cp "target/${{ matrix.target }}/release/libhlwindow.a" out/
+          cp LICENSE README.md out/
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mobile-${{ matrix.name }}
+          path: out/
+          if-no-files-found: error
+
   wasm:
     name: wasm side module
     needs: plan
@@ -177,7 +238,7 @@ jobs:
 
   publish:
     name: publish
-    needs: [plan, native, wasm]
+    needs: [plan, native, mobile, wasm]
     if: needs.plan.outputs.tag != ''
     runs-on: ubuntu-24.04
     permissions:
@@ -215,6 +276,18 @@ jobs:
           else
             python3 scripts/package_haxelib.py release --version "$TAG"
           fi
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mobile-*
+          path: mobile
+
+      - name: Archive the mobile static libraries
+        run: |
+          for dir in mobile/*/; do
+            name=$(basename "$dir")
+            (cd "$dir" && zip -qr "../../release/hlwindow-${name#mobile-}.zip" .)
+          done
 
       - name: Archive the wasm side module
         run: |
