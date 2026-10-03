@@ -5,6 +5,16 @@ abstract Window(Int) from Int to Int {
 	public static inline function open(attributes:WindowAttributes):Window return WindowNative.open(attributes);
 	public inline function valid():Bool return WindowNative.valid(this);
 	public static inline function listenDeviceEvents(when:DeviceEvents):Void WindowNative.listenDeviceEvents(when);
+	static inline function readOptionalText(index:Int):OptionalText {
+		return switch (index) {
+			case 1: OptionalText.Some(text(WindowNative.optionalTextSomeText()));
+			default: OptionalText.None;
+		};
+	}
+	public static inline function clipboardText():OptionalText {
+		return readOptionalText(WindowNative.clipboardTextVariant());
+	}
+	public static inline function setClipboardText(text:String):Void WindowNative.setClipboardText(text);
 	static inline function eventMouseInputButton():MouseButton {
 		return switch (WindowNative.eventMouseInputButtonVariant()) {
 			case 1: MouseButton.Right;
@@ -298,6 +308,12 @@ private extern class WindowNative {
 	public static function valid(self:Int):Bool;
 	@:hlNative("xwindow", "window_listen_device_events")
 	public static function listenDeviceEvents(when:DeviceEvents):Void;
+	@:hlNative("xwindow", "window_clipboard_text_variant")
+	public static function clipboardTextVariant():Int;
+	@:hlNative("xwindow", "window_optional_text_some_text")
+	public static function optionalTextSomeText():hl.Bytes;
+	@:hlNative("xwindow", "window_set_clipboard_text")
+	public static function setClipboardText(text:String):Void;
 	@:hlNative("xwindow", "window_poll_variant")
 	public static function pollVariant(self:Int):Int;
 	@:hlNative("xwindow", "window_event_resized_width")
