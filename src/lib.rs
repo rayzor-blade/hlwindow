@@ -23,6 +23,24 @@ static mut errno: i32 = 0;
 
 mod runtime {
     pub use hl_xidl::*;
+
+    /// hl_xidl's host hooks, and HashLink's blocking convention for the
+    /// native backend's pump.
+    pub mod host {
+        pub use hl_xidl::host::*;
+
+        #[cfg(not(target_family = "wasm"))]
+        unsafe extern "C" {
+            fn hl_blocking(yes: bool);
+        }
+
+        /// Marks this thread as outside the heap, so the collector may run
+        /// without it.
+        #[cfg(not(target_family = "wasm"))]
+        pub fn blocking(yes: bool) {
+            unsafe { hl_blocking(yes) }
+        }
+    }
 }
 
 #[cfg(not(target_family = "wasm"))]
