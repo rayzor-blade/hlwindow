@@ -18,6 +18,8 @@ abstract WindowAttributes(hl.Abstract<"xwindow_WindowAttributes">) {
 	public inline function decorations(value:Bool):Void WindowAttributesNative.decorations(this, value);
 	public inline function transparent(value:Bool):Void WindowAttributesNative.transparent(this, value);
 	public inline function blur(value:Bool):Void WindowAttributesNative.blur(this, value);
+	public inline function hasShadow(value:Bool):Void WindowAttributesNative.hasShadow(this, value);
+	public inline function blurRadius(value:Int):Void WindowAttributesNative.blurRadius(this, value);
 	public inline function contentProtected(value:Bool):Void WindowAttributesNative.contentProtected(this, value);
 	public inline function fullscreen(value:Bool):Void WindowAttributesNative.fullscreen(this, value);
 	public inline function active(value:Bool):Void WindowAttributesNative.active(this, value);
@@ -67,6 +69,10 @@ private extern class WindowAttributesNative {
 	public static function transparent(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
 	@:hlNative("xwindow", "window_attributes_blur")
 	public static function blur(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
+	@:hlNative("xwindow", "window_attributes_has_shadow")
+	public static function hasShadow(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
+	@:hlNative("xwindow", "window_attributes_blur_radius")
+	public static function blurRadius(self:hl.Abstract<"xwindow_WindowAttributes">, value:Int):Void;
 	@:hlNative("xwindow", "window_attributes_content_protected")
 	public static function contentProtected(self:hl.Abstract<"xwindow_WindowAttributes">, value:Bool):Void;
 	@:hlNative("xwindow", "window_attributes_fullscreen")

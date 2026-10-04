@@ -281,6 +281,8 @@ abstract Window(Int) from Int to Int {
 	public inline function setWindowLevel(level:WindowLevel):Void WindowNative.setWindowLevel(this, level);
 	public inline function setTransparent(transparent:Bool):Void WindowNative.setTransparent(this, transparent);
 	public inline function setBlur(blur:Bool):Void WindowNative.setBlur(this, blur);
+	public inline function setHasShadow(hasShadow:Bool):Void WindowNative.setHasShadow(this, hasShadow);
+	public inline function setBlurRadius(radius:Int):Void WindowNative.setBlurRadius(this, radius);
 	public inline function setContentProtected(protected:Bool):Void WindowNative.setContentProtected(this, protected);
 	public inline function setScaleSizing(sizing:ScaleSizing):Void WindowNative.setScaleSizing(this, sizing);
 	public inline function setTheme(theme:Null<Theme>):Void WindowNative.setThemeNative(this, (theme == null ? 0x80000000 : (theme : Int)));
@@ -693,6 +695,10 @@ private extern class WindowNative {
 	public static function setTransparent(self:Int, transparent:Bool):Void;
 	@:hlNative("xwindow", "window_set_blur")
 	public static function setBlur(self:Int, blur:Bool):Void;
+	@:hlNative("xwindow", "window_set_has_shadow")
+	public static function setHasShadow(self:Int, hasShadow:Bool):Void;
+	@:hlNative("xwindow", "window_set_blur_radius")
+	public static function setBlurRadius(self:Int, radius:Int):Void;
 	@:hlNative("xwindow", "window_set_content_protected")
 	public static function setContentProtected(self:Int, protected:Bool):Void;
 	@:hlNative("xwindow", "window_set_scale_sizing")
