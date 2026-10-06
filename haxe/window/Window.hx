@@ -2,8 +2,13 @@
 package window;
 
 abstract Window(Int) from Int to Int {
+	/** A new window; one whose `valid` is false when the platform refuses. */
 	public static inline function open(attributes:WindowAttributes):Window return WindowNative.open(attributes);
 	public inline function valid():Bool return WindowNative.valid(this);
+	/**
+	 * When raw device events come, for every window: by default only while
+	 * one of the program's windows has focus.
+	 */
 	public static inline function listenDeviceEvents(when:DeviceEvents):Void WindowNative.listenDeviceEvents(when);
 	static inline function readOptionalText(index:Int):OptionalText {
 		return switch (index) {
@@ -11,10 +16,20 @@ abstract Window(Int) from Int to Int {
 			default: OptionalText.None;
 		};
 	}
+	/**
+	 * The clipboard's text: none when it holds no text, no window is open,
+	 * or the platform has no clipboard to read, as a page cannot.
+	 */
 	public static inline function clipboardText():OptionalText {
 		return readOptionalText(WindowNative.clipboardTextVariant());
 	}
+	/** Puts text on the clipboard; nothing happens with no window open. */
 	public static inline function setClipboardText(text:String):Void WindowNative.setClipboardText(text);
+	/**
+	 * How many types the clipboard holds now; `clipboardType` names each,
+	 * best first, as a MIME type. `text/plain` is UTF-8 text and
+	 * `text/uri-list` a list of files.
+	 */
 	public static inline function clipboardTypeCount():Int return WindowNative.clipboardTypeCount();
 	public static inline function clipboardType(index:Int):String { var value = WindowNative.clipboardType(index); return value == null ? null : @:privateAccess String.fromUCS2(value); };
 	static inline function readOptionalBytes(index:Int):OptionalBytes {
@@ -23,6 +38,10 @@ abstract Window(Int) from Int to Int {
 			default: OptionalBytes.None;
 		};
 	}
+	/**
+	 * The clipboard's bytes for a MIME type, or none when it does not hold
+	 * it, no window is open, or the platform cannot read it.
+	 */
 	public static inline function clipboardData(mimeType:String):OptionalBytes {
 		return readOptionalBytes(WindowNative.clipboardDataVariant(mimeType));
 	}
@@ -240,19 +259,38 @@ abstract Window(Int) from Int to Int {
 			default: Event.None;
 		};
 	}
+	/**
+	 * The next event, without waiting. It asks the platform for more only
+	 * when the window has none queued and has answered none since the
+	 * platform was last asked, so draining with polls asks once.
+	 */
 	public inline function poll():Event {
 		return readEvent(WindowNative.pollVariant(this));
 	}
+	/**
+	 * The next event, waiting up to `timeout` seconds for one; a negative
+	 * timeout waits as long as it takes.
+	 */
 	public inline function wait(timeout:Float):Event {
 		return readEvent(WindowNative.waitVariant(this, timeout));
 	}
+	/** Close the window; its handle names nothing after. */
 	public inline function close():Void WindowNative.close(this);
+	/**
+	 * The content's width in physical pixels; `setSize` takes logical
+	 * ones, this over `scaleFactor`.
+	 */
 	public inline function width():Int return WindowNative.width(this);
 	public inline function height():Int return WindowNative.height(this);
 	public inline function outerWidth():Int return WindowNative.outerWidth(this);
 	public inline function outerHeight():Int return WindowNative.outerHeight(this);
+	/**
+	 * Where the window's frame is, in physical pixels; `setPosition`
+	 * takes logical ones, this over `scaleFactor`.
+	 */
 	public inline function x():Int return WindowNative.x(this);
 	public inline function y():Int return WindowNative.y(this);
+	/** Where the window's content is, without its frame. */
 	public inline function innerX():Int return WindowNative.innerX(this);
 	public inline function innerY():Int return WindowNative.innerY(this);
 	public inline function scaleFactor():Float return WindowNative.scaleFactor(this);
@@ -265,12 +303,26 @@ abstract Window(Int) from Int to Int {
 	public inline function isResizable():Bool return WindowNative.isResizable(this);
 	public inline function isDecorated():Bool return WindowNative.isDecorated(this);
 	public inline function theme():Theme return WindowNative.theme(this);
+	/**
+	 * The window for a GPU surface: a platform code, and with `raw` the
+	 * four integers xgpu's `GpuInstance.surface` takes after it. See
+	 * xwindow-core's `raw` for the table.
+	 */
 	public inline function platform():Int return WindowNative.platform(this);
 	public inline function raw(which:Int):haxe.Int64 return WindowNative.raw(this, which);
 	public inline function setTitle(title:String):Void WindowNative.setTitle(this, title);
+	/**
+	 * The content's size in logical pixels: `width` and `height` over
+	 * `scaleFactor`.
+	 */
 	public inline function setSize(width:Int, height:Int):Void WindowNative.setSize(this, width, height);
+	/** A size of zero by zero removes the limit. */
 	public inline function setMinSize(width:Int, height:Int):Void WindowNative.setMinSize(this, width, height);
 	public inline function setMaxSize(width:Int, height:Int):Void WindowNative.setMaxSize(this, width, height);
+	/**
+	 * Move the window's frame to logical pixels: `x` and `y` over
+	 * `scaleFactor`.
+	 */
 	public inline function setPosition(x:Int, y:Int):Void WindowNative.setPosition(this, x, y);
 	public inline function setResizable(resizable:Bool):Void WindowNative.setResizable(this, resizable);
 	public inline function setMinimized(minimized:Bool):Void WindowNative.setMinimized(this, minimized);
@@ -281,32 +333,71 @@ abstract Window(Int) from Int to Int {
 	public inline function setWindowLevel(level:WindowLevel):Void WindowNative.setWindowLevel(this, level);
 	public inline function setTransparent(transparent:Bool):Void WindowNative.setTransparent(this, transparent);
 	public inline function setBlur(blur:Bool):Void WindowNative.setBlur(this, blur);
+	/**
+	 * The system's shadow behind the window, on macOS and, for an
+	 * undecorated window, Windows; elsewhere nothing.
+	 */
 	public inline function setHasShadow(hasShadow:Bool):Void WindowNative.setHasShadow(this, hasShadow);
+	/**
+	 * How far the background behind a transparent window is blurred, 0 for
+	 * none: a radius on macOS, where `setBlur` means a radius of 80, and the
+	 * platform's blur on or off elsewhere.
+	 */
 	public inline function setBlurRadius(radius:Int):Void WindowNative.setBlurRadius(this, radius);
 	public inline function setContentProtected(protected:Bool):Void WindowNative.setContentProtected(this, protected);
 	public inline function setScaleSizing(sizing:ScaleSizing):Void WindowNative.setScaleSizing(this, sizing);
+	/** A theme, or none to follow the system's. */
 	public inline function setTheme(theme:Null<Theme>):Void WindowNative.setThemeNative(this, (theme == null ? 0x80000000 : (theme : Int)));
+	/** RGBA pixels, `width` by `height`; an empty buffer removes the icon. */
 	public inline function setIcon(rgba:haxe.io.Bytes, width:Int, height:Int):Void WindowNative.setIcon(this, rgba, width, height);
+	/** The steps a user resizes the window by; zero by zero removes them. */
 	public inline function setResizeIncrements(width:Int, height:Int):Void WindowNative.setResizeIncrements(this, width, height);
 	public inline function setEnabledButtons(close:Bool, minimize:Bool, maximize:Bool):Void WindowNative.setEnabledButtons(this, close, minimize, maximize);
+	/** Fullscreen in a video mode of one of the window's monitors. */
 	public inline function setExclusiveFullscreen(mode:VideoMode):Void WindowNative.setExclusiveFullscreen(this, mode);
+	/**
+	 * Move the window with the pointer while a button is held, as from an
+	 * undecorated window's title bar; whether the platform started it.
+	 */
 	public inline function dragWindow():Bool return WindowNative.dragWindow(this);
 	public inline function dragResizeWindow(direction:ResizeDirection):Bool return WindowNative.dragResizeWindow(this, direction);
+	/** The system's window menu, at a logical position in the window. */
 	public inline function showWindowMenu(x:Float, y:Float):Void WindowNative.showWindowMenu(this, x, y);
 	public inline function requestRedraw():Void WindowNative.requestRedraw(this);
+	/**
+	 * Call just before presenting a frame. On Wayland the next
+	 * `RedrawRequested` then waits for the compositor's frame callback for
+	 * that frame, which paces drawing to the display; elsewhere it does
+	 * nothing.
+	 */
 	public inline function prePresentNotify():Void WindowNative.prePresentNotify(this);
 	public inline function focus():Void WindowNative.focus(this);
 	public inline function requestAttention(attention:Attention):Void WindowNative.requestAttention(this, attention);
 	public inline function setCursorIcon(icon:CursorIcon):Void WindowNative.setCursorIcon(this, icon);
+	/**
+	 * A cursor of `width` by `height` RGBA pixels, its hot spot at
+	 * `hotX`, `hotY`.
+	 */
 	public inline function setCursorImage(rgba:haxe.io.Bytes, width:Int, height:Int, hotX:Int, hotY:Int):Void WindowNative.setCursorImage(this, rgba, width, height, hotX, hotY);
 	public inline function setCursorVisible(visible:Bool):Void WindowNative.setCursorVisible(this, visible);
+	/** Whether the platform took the grab. */
 	public inline function setCursorGrab(grab:CursorGrab):Bool return WindowNative.setCursorGrab(this, grab);
+	/**
+	 * Whether pointer input reaches the window rather than passing
+	 * through it; whether the platform took the setting.
+	 */
 	public inline function setCursorHittest(hittest:Bool):Bool return WindowNative.setCursorHittest(this, hittest);
+	/** Whether the platform moved the cursor. */
 	public inline function setCursorPosition(x:Float, y:Float):Bool return WindowNative.setCursorPosition(this, x, y);
 	public inline function setImeAllowed(allowed:Bool):Void WindowNative.setImeAllowed(this, allowed);
 	public inline function setImePurpose(purpose:ImePurpose):Void WindowNative.setImePurpose(this, purpose);
 	public inline function setImeCursorArea(x:Float, y:Float, width:Float, height:Float):Void WindowNative.setImeCursorArea(this, x, y, width, height);
+	/**
+	 * A request's serial, which its `ActivationTokenDone` carries; zero
+	 * where the platform has no activation tokens.
+	 */
 	public inline function requestActivationToken():haxe.Int64 return WindowNative.requestActivationToken(this);
+	/** A monitor whose `valid` is false when there is none. */
 	public inline function currentMonitor():Monitor return WindowNative.currentMonitor(this);
 	public inline function primaryMonitor():Monitor return WindowNative.primaryMonitor(this);
 	public inline function monitorCount():Int return WindowNative.monitorCount(this);

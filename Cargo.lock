@@ -417,15 +417,16 @@ source = "git+https://github.com/rayzor-blade/hl_abi?rev=5482332e64fbdb8ae65e559
 [[package]]
 name = "hl_abi"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/hl_abi#78c5c70d3da5aedc5b1d4550c73e2d3b591c18a5"
+source = "git+https://github.com/rayzor-blade/hl_abi#2046a265f45ebe7a1093e59074d8eced2b0c0376"
 
 [[package]]
 name = "hl_xidl"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/hlwgpu.git?rev=9fbcffd920f45d4c1683667a39340d25dbce266c#9fbcffd920f45d4c1683667a39340d25dbce266c"
+source = "git+https://github.com/rayzor-blade/hlwgpu.git?rev=8c330296253235bea752cc444c96a6c7cd6114bc#8c330296253235bea752cc444c96a6c7cd6114bc"
 dependencies = [
  "ash_future_abi",
  "hl_abi 0.1.0 (git+https://github.com/rayzor-blade/hl_abi)",
+ "libc",
  "libloading",
 ]
 
@@ -1766,7 +1767,7 @@ checksum = "ea6fc2961e4ef194dcbfe56bb845534d0dc8098940c7e5c012a258bfec6701bd"
 [[package]]
 name = "x_idl"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/x-idl.git?rev=d76721475f92e439dab2888f72a1c05ab41eb832#d76721475f92e439dab2888f72a1c05ab41eb832"
+source = "git+https://github.com/rayzor-blade/x-idl.git?rev=bf1ab2f262c00438f26e261a45822e3fbd6db76a#bf1ab2f262c00438f26e261a45822e3fbd6db76a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1802,12 +1803,12 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 [[package]]
 name = "xwindow-backend"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=a212daaa6bd058ca06fe0f51fba687ad8c48142d#a212daaa6bd058ca06fe0f51fba687ad8c48142d"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=27d4fc611fa5f332324242e9fbd38402886bb724#27d4fc611fa5f332324242e9fbd38402886bb724"
 
 [[package]]
 name = "xwindow-bindgen"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=a212daaa6bd058ca06fe0f51fba687ad8c48142d#a212daaa6bd058ca06fe0f51fba687ad8c48142d"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=27d4fc611fa5f332324242e9fbd38402886bb724#27d4fc611fa5f332324242e9fbd38402886bb724"
 dependencies = [
  "x_idl",
  "xwindow-core",
@@ -1816,7 +1817,7 @@ dependencies = [
 [[package]]
 name = "xwindow-clipboard"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=a212daaa6bd058ca06fe0f51fba687ad8c48142d#a212daaa6bd058ca06fe0f51fba687ad8c48142d"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=27d4fc611fa5f332324242e9fbd38402886bb724#27d4fc611fa5f332324242e9fbd38402886bb724"
 dependencies = [
  "calloop",
  "clipboard-win",
@@ -1834,7 +1835,7 @@ dependencies = [
 [[package]]
 name = "xwindow-core"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=a212daaa6bd058ca06fe0f51fba687ad8c48142d#a212daaa6bd058ca06fe0f51fba687ad8c48142d"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=27d4fc611fa5f332324242e9fbd38402886bb724#27d4fc611fa5f332324242e9fbd38402886bb724"
 dependencies = [
  "raw-window-handle",
 ]
