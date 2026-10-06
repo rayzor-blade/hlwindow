@@ -21,6 +21,12 @@ static ALLOCATOR: hl_abi::ProgramAllocator = hl_abi::ProgramAllocator;
 #[cfg_attr(target_feature = "atomics", thread_local)]
 static mut errno: i32 = 0;
 
+/// Tells Ash's card-marking collector that this library stores a pointer
+/// to a GC object into a GC object only through the runtime's functions,
+/// which mark the card.
+#[unsafe(no_mangle)]
+pub static ash_hdll_barrier_aware: u8 = 1;
+
 mod runtime {
     pub use hl_xidl::*;
 
