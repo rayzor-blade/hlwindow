@@ -22,8 +22,8 @@ android-game-activity = ["winit/android-game-activity"]
 android-main = []
 
 [build-dependencies]
-xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "27d4fc611fa5f332324242e9fbd38402886bb724" }
-xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "27d4fc611fa5f332324242e9fbd38402886bb724" }
+xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c16d6af153a8d369d3a44d9d998990888014dcc2" }
+xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c16d6af153a8d369d3a44d9d998990888014dcc2" }
 
 [dependencies]
 hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
@@ -36,7 +36,7 @@ xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "27d
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 winit = "0.30"
 raw-window-handle = "0.6"
-xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "27d4fc611fa5f332324242e9fbd38402886bb724" }
+xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c16d6af153a8d369d3a44d9d998990888014dcc2" }
 
 # A released hdll is loaded by a VM and never debugged through, so the symbol
 # table is dead weight. The window backend has no hot loops, so it is built
