@@ -1804,12 +1804,12 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 [[package]]
 name = "xwindow-backend"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=c8f8010b8117ffb570fab8eb5d8c0feab2ae347e#c8f8010b8117ffb570fab8eb5d8c0feab2ae347e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=f039beb9679c62df42d4331607d388bfd0821eb7#f039beb9679c62df42d4331607d388bfd0821eb7"
 
 [[package]]
 name = "xwindow-bindgen"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=c8f8010b8117ffb570fab8eb5d8c0feab2ae347e#c8f8010b8117ffb570fab8eb5d8c0feab2ae347e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=f039beb9679c62df42d4331607d388bfd0821eb7#f039beb9679c62df42d4331607d388bfd0821eb7"
 dependencies = [
  "x_idl",
  "xwindow-core",
@@ -1818,7 +1818,7 @@ dependencies = [
 [[package]]
 name = "xwindow-clipboard"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=c8f8010b8117ffb570fab8eb5d8c0feab2ae347e#c8f8010b8117ffb570fab8eb5d8c0feab2ae347e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=f039beb9679c62df42d4331607d388bfd0821eb7#f039beb9679c62df42d4331607d388bfd0821eb7"
 dependencies = [
  "calloop",
  "clipboard-win",
@@ -1836,7 +1836,7 @@ dependencies = [
 [[package]]
 name = "xwindow-core"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=c8f8010b8117ffb570fab8eb5d8c0feab2ae347e#c8f8010b8117ffb570fab8eb5d8c0feab2ae347e"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=f039beb9679c62df42d4331607d388bfd0821eb7#f039beb9679c62df42d4331607d388bfd0821eb7"
 dependencies = [
  "raw-window-handle",
 ]

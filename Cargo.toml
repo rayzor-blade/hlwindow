@@ -22,8 +22,8 @@ android-game-activity = ["winit/android-game-activity"]
 android-main = []
 
 [build-dependencies]
-xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c8f8010b8117ffb570fab8eb5d8c0feab2ae347e" }
-xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c8f8010b8117ffb570fab8eb5d8c0feab2ae347e" }
+xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "f039beb9679c62df42d4331607d388bfd0821eb7" }
+xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "f039beb9679c62df42d4331607d388bfd0821eb7" }
 
 [dependencies]
 hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
@@ -31,13 +31,13 @@ hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
 hl_xidl = { git = "https://github.com/rayzor-blade/hlwgpu.git", rev = "8c330296253235bea752cc444c96a6c7cd6114bc" }
 # The generated model names Ash's Future carrier by this crate's path.
 ash_future_abi = { git = "https://github.com/rayzor-blade/ash.git", rev = "ac80cdb17c9fe82a0e86ab893e9d7304d5319fe6" }
-xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c8f8010b8117ffb570fab8eb5d8c0feab2ae347e" }
+xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "f039beb9679c62df42d4331607d388bfd0821eb7" }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 libloading = "0.8"
 winit = "0.30"
 raw-window-handle = "0.6"
-xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "c8f8010b8117ffb570fab8eb5d8c0feab2ae347e" }
+xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "f039beb9679c62df42d4331607d388bfd0821eb7" }
 
 # A released hdll is loaded by a VM and never debugged through, so the symbol
 # table is dead weight. The window backend has no hot loops, so it is built
