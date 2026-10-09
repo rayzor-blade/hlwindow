@@ -5,8 +5,8 @@
   "tags": ["window", "hashlink", "ash", "xwindow"],
   "description": "Windows, input and events for Haxe on HashLink and Ash, backed by xwindow and winit.",
   "contributors": ["rayzor", "darmie"],
-  "version": "0.2.0",
-  "releasenote": "The xwindow-generated window package, with xwindow.hdll for each desktop platform.",
+  "version": "0.2.1",
+  "releasenote": "Event-driven idle waits, runtime deadline wakeups, native cursor coalescing, and quiet X11 motion handling.",
   "classPath": "haxe",
   "dependencies": {}
 }
