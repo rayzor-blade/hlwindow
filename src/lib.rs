@@ -71,7 +71,9 @@ mod runtime_wait;
 /// its `AndroidApp`) or runs it and gives the program turns (on iOS), with
 /// the winit it is built from.
 #[cfg(not(target_family = "wasm"))]
-pub use backend::{Drive, attach};
+pub use backend::{Drive, attach, external_pending, external_pump, pump_external};
+#[cfg(all(not(target_family = "wasm"), not(target_os = "ios")))]
+pub use backend::external_waker;
 #[cfg(not(target_family = "wasm"))]
 pub use winit;
 
