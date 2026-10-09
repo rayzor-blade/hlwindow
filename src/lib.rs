@@ -51,8 +51,21 @@ mod runtime {
 
 #[cfg(not(target_family = "wasm"))]
 mod backend {
-    include!(concat!(env!("OUT_DIR"), "/xwindow_backend/native.rs"));
+    mod native {
+        include!(concat!(env!("OUT_DIR"), "/xwindow_backend/native.rs"));
+    }
+    pub use native::*;
+
+    // Prepare outside the backend's loop borrow: ready interpreter fibers
+    // may call a window API before we enter the native wait.
+    pub unsafe fn window_wait(handle: i32, timeout: f64) -> crate::Event {
+        let wait = crate::runtime_wait::Wait::begin(timeout);
+        unsafe { native::window_wait(handle, wait.timeout) }
+    }
 }
+
+#[cfg(not(target_family = "wasm"))]
+mod runtime_wait;
 
 /// The host's hook, for a host that builds the event loop (on Android, with
 /// its `AndroidApp`) or runs it and gives the program turns (on iOS), with

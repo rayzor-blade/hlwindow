@@ -274,6 +274,12 @@ abstract Window(Int) from Int to Int {
 	public inline function wait(timeout:Float):Event {
 		return readEvent(WindowNative.waitVariant(this, timeout));
 	}
+	/**
+	 * Wake the current or next wait for application work, from any thread.
+	 * Several calls coalesce; no synthetic window event is produced.
+	 * False when no native event loop is available (including web hosts).
+	 */
+	public static inline function wake():Bool return WindowNative.wake();
 	/** Close the window; its handle names nothing after. */
 	public inline function close():Void WindowNative.close(this);
 	/**
@@ -716,6 +722,8 @@ private extern class WindowNative {
 	public static function eventDeviceEventKeyState():MouseElementState;
 	@:hlNative("xwindow", "window_wait_variant")
 	public static function waitVariant(self:Int, timeout:Float):Int;
+	@:hlNative("xwindow", "window_wake")
+	public static function wake():Bool;
 	@:hlNative("xwindow", "window_close")
 	public static function close(self:Int):Void;
 	@:hlNative("xwindow", "window_width")
