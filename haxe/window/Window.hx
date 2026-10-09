@@ -280,6 +280,23 @@ abstract Window(Int) from Int to Int {
 	 * False when no native event loop is available (including web hosts).
 	 */
 	public static inline function wake():Bool return WindowNative.wake();
+	/**
+	 * Coalesce cursor moves inside a caller-guaranteed quiet rectangle in
+	 * physical pixels (left/top inclusive, right/bottom exclusive). No move
+	 * is queued there; only its latest position is retained. Crossing the
+	 * rectangle or receiving another window event resumes ordinary delivery.
+	 * Empty or non-finite bounds disable coalescing. Raw device events are
+	 * unaffected; applications using only window input can disable those.
+	 */
+	public inline function coalesceCursorMoves(left:Float, top:Float, right:Float, bottom:Float):Void WindowNative.coalesceCursorMoves(this, left, top, right, bottom);
+	/**
+	 * Disable coalescing and take the latest retained CursorMoved, or None.
+	 * Call before changing hit geometry or processing application work.
+	 * Other window events automatically deliver that position first.
+	 */
+	public inline function takeCursorMove():Event {
+		return readEvent(WindowNative.takeCursorMoveVariant(this));
+	}
 	/** Close the window; its handle names nothing after. */
 	public inline function close():Void WindowNative.close(this);
 	/**
@@ -724,6 +741,10 @@ private extern class WindowNative {
 	public static function waitVariant(self:Int, timeout:Float):Int;
 	@:hlNative("xwindow", "window_wake")
 	public static function wake():Bool;
+	@:hlNative("xwindow", "window_coalesce_cursor_moves")
+	public static function coalesceCursorMoves(self:Int, left:Float, top:Float, right:Float, bottom:Float):Void;
+	@:hlNative("xwindow", "window_take_cursor_move_variant")
+	public static function takeCursorMoveVariant(self:Int):Int;
 	@:hlNative("xwindow", "window_close")
 	public static function close(self:Int):Void;
 	@:hlNative("xwindow", "window_width")
