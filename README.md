@@ -68,6 +68,35 @@ staticlib and rlib, and its hdll comes out larger. A mobile archive is built
 the same way with `--crate-type staticlib`. The wasm build needs a nightly
 toolchain with `rust-src`.
 
+## Gamepads
+
+The generated `window.Gamepad` API provides application-wide controller
+input independently of a window's keyboard and pointer queue. Named buttons
+use positions (`South`, `East`, `West`, `North`); recognized PlayStation pads
+map those to Cross, Circle, Square and Triangle.
+
+Controllers expose capability queries, hot-plug events, analog triggers,
+sticks and rumble where supported. Reuse a 176-byte buffer for `snapshot`,
+and a buffer of 32-byte records for `Gamepad.drain`, to read state and short
+button taps without constructing event objects. The readable `poll` API
+consumes the same event queue.
+
+See xwindow's [gamepad chapter](https://github.com/rayzor-blade/xwindow/blob/main/docs/gamepads.md)
+for the buffer layout, platform support and examples. Applications map these
+controls to actions and display their own device-specific prompts.
+
+The native smoke check uses the generated bindings:
+
+```sh
+haxe -cp haxe -cp examples/gamepads -main Checks -hl /tmp/gamepad-checks.hl
+# Put the built xwindow.hdll beside the bytecode, then run with Ash.
+ash /tmp/gamepad-checks.hl
+```
+
+It verifies unavailable handles and reused buffers with or without connected
+controllers. Its allocation check covers reads of an absent controller; it
+cannot verify physical controller mappings or motor effects.
+
 ## Surfaces
 
 `Window.platform()` and `Window.raw(0..3)` are the arguments

@@ -85,14 +85,14 @@ jobs:
         with:
           shared-key: release-${{ matrix.platform }}
 
-      # winit reaches X11 and Wayland through these.
+      # winit needs windowing headers; gilrs needs libudev on Linux.
       - name: Install the windowing headers
         if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev \
-            libxi-dev libxcursor-dev
+            libxi-dev libxcursor-dev libudev-dev
 
       # MSVC will not leave a symbol undefined in a DLL, so xwindow.hdll has
       # to be linked against the VM's import library. Only the VM is built;
