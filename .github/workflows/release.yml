@@ -276,9 +276,9 @@ jobs:
       - name: Package for Haxelib
         run: |
           if [ "$TAG" = nightly ]; then
-            python3 scripts/package_haxelib.py release
+            python3 scripts/package_haxelib.py release --web wasm
           else
-            python3 scripts/package_haxelib.py release --version "$TAG"
+            python3 scripts/package_haxelib.py release --web wasm --version "$TAG"
           fi
 
       - uses: actions/download-artifact@v8

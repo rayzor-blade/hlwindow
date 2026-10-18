@@ -9,10 +9,21 @@ import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
 
-/** Copy the bundled host xwindow.hdll beside HashLink bytecode. */
+/**
+	Copy the bundled host xwindow.hdll beside HashLink bytecode. A build defined
+	`wasm` is for a page: it gets the web build's `xwindow.wasm` and the scripts
+	that run beside it (`web/` in the package, or the directory `-D hlwindow_web`
+	names) in place of the desktop library.
+*/
 class NativeInstall {
+	static final WEB_FILES = ["xwindow.wasm", "xwindow.mjs", "xwindow_wire.mjs"];
+
 	public static function stage():Void {
 		if (!Context.defined("hl") || Context.defined("hlc") || Context.defined("hlwindow_no_hdll")) return;
+		if (Context.defined("wasm")) {
+			stageWeb();
+			return;
+		}
 		Context.onAfterGenerate(() -> {
 			var platform = hostPlatform();
 			// The haxelib root holds haxe/hlwindow/macro/NativeInstall.hx.
@@ -32,6 +43,24 @@ class NativeInstall {
 			}
 			var destination = Path.join([Path.directory(Compiler.getOutput()), "xwindow.hdll"]);
 			if (Path.normalize(source) != Path.normalize(destination)) File.copy(source, destination);
+		});
+	}
+
+	static function stageWeb():Void {
+		Context.onAfterGenerate(() -> {
+			var module = Context.resolvePath("hlwindow/macro/NativeInstall.hx");
+			var root = Path.directory(Path.directory(Path.directory(Path.directory(module))));
+			var web = Context.defined("hlwindow_web") ? Context.definedValue("hlwindow_web") : Path.join([root, "web"]);
+			var into = Path.directory(Compiler.getOutput());
+			for (name in WEB_FILES) {
+				var source = Path.join([web, name]);
+				if (!FileSystem.exists(source)) {
+					Context.fatalError('hlwindow is missing $source; install the release Haxelib ZIP, or name the wasm build with -D hlwindow_web=<directory>', Context.currentPos());
+					return;
+				}
+				var destination = Path.join([into, name]);
+				if (Path.normalize(source) != Path.normalize(destination)) File.copy(source, destination);
+			}
 		});
 	}
 
