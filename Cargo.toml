@@ -22,8 +22,8 @@ android-game-activity = ["winit/android-game-activity"]
 android-main = []
 
 [build-dependencies]
-xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "eb9ad592375d2b33be1397377008f1718ba7d435" }
-xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "eb9ad592375d2b33be1397377008f1718ba7d435" }
+xwindow-backend = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "87980302ca5fcb91abe7e7526d6db1bb52f18331" }
+xwindow-bindgen = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "87980302ca5fcb91abe7e7526d6db1bb52f18331" }
 
 [dependencies]
 hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
@@ -31,14 +31,14 @@ hl_abi = { git = "https://github.com/rayzor-blade/hl_abi" }
 hl_xidl = { git = "https://github.com/rayzor-blade/hlwgpu.git", rev = "8c330296253235bea752cc444c96a6c7cd6114bc" }
 # The generated model names Ash's Future carrier by this crate's path.
 ash_future_abi = { git = "https://github.com/rayzor-blade/ash.git", rev = "ac80cdb17c9fe82a0e86ab893e9d7304d5319fe6" }
-xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "eb9ad592375d2b33be1397377008f1718ba7d435" }
+xwindow-core = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "87980302ca5fcb91abe7e7526d6db1bb52f18331" }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 libloading = "0.8"
 winit = "0.30"
 raw-window-handle = "0.6"
-xwindow-gamepad = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "eb9ad592375d2b33be1397377008f1718ba7d435" }
-xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "eb9ad592375d2b33be1397377008f1718ba7d435" }
+xwindow-gamepad = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "87980302ca5fcb91abe7e7526d6db1bb52f18331" }
+xwindow-clipboard = { git = "https://github.com/rayzor-blade/xwindow.git", rev = "87980302ca5fcb91abe7e7526d6db1bb52f18331" }
 
 # A released hdll is loaded by a VM and never debugged through, so the symbol
 # table is dead weight. The window backend has no hot loops, so it is built
