@@ -5,8 +5,8 @@
   "tags": ["window", "hashlink", "ash", "xwindow"],
   "description": "Windows, input and events for Haxe on HashLink and Ash, backed by xwindow and winit.",
   "contributors": ["rayzor", "darmie"],
-  "version": "0.3.0",
-  "releasenote": "Shared native and browser gamepads, standard positional mappings, hot-plugging, reusable state and event buffers, and rumble capability queries.",
+  "version": "0.3.1",
+  "releasenote": "Ships the web build in the Haxelib ZIP, which a build defined wasm stages beside the program. Builds on an xwindow that keeps a press, a release and the redraw together, and sets the application icon on macOS.",
   "classPath": "haxe",
   "dependencies": {}
 }
