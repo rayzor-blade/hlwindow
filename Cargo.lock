@@ -2028,7 +2028,7 @@ checksum = "b9cc00251562a284751c9973bace760d86c0276c471b4be569fe6b068ee97a56"
 [[package]]
 name = "xwindow-appicon"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 dependencies = [
  "objc2",
  "objc2-app-kit",
@@ -2038,12 +2038,12 @@ dependencies = [
 [[package]]
 name = "xwindow-backend"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 
 [[package]]
 name = "xwindow-bindgen"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 dependencies = [
  "x_idl",
  "xwindow-core",
@@ -2052,7 +2052,7 @@ dependencies = [
 [[package]]
 name = "xwindow-clipboard"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 dependencies = [
  "calloop",
  "clipboard-win",
@@ -2070,7 +2070,7 @@ dependencies = [
 [[package]]
 name = "xwindow-core"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 dependencies = [
  "raw-window-handle",
 ]
@@ -2078,7 +2078,7 @@ dependencies = [
 [[package]]
 name = "xwindow-gamepad"
 version = "0.1.0"
-source = "git+https://github.com/rayzor-blade/xwindow.git?rev=3be8f63ae997fc40b5f10c55801c18132a6050c2#3be8f63ae997fc40b5f10c55801c18132a6050c2"
+source = "git+https://github.com/rayzor-blade/xwindow.git?rev=53d8f6388d1781b211aacfb4f4393975fbf9815d#53d8f6388d1781b211aacfb4f4393975fbf9815d"
 dependencies = [
  "gilrs",
  "xwindow-core",
