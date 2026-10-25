@@ -1,6 +1,6 @@
 [package]
 name = "hlwindow"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 license = "MIT"
 description = "xwindow's window adapter for HashLink and Ash, loaded as xwindow.hdll"

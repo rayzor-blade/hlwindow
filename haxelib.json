@@ -5,8 +5,8 @@
   "tags": ["window", "hashlink", "ash", "xwindow"],
   "description": "Windows, input and events for Haxe on HashLink and Ash, backed by xwindow and winit.",
   "contributors": ["rayzor", "darmie"],
-  "version": "0.3.1",
-  "releasenote": "Ships the web build in the Haxelib ZIP, which a build defined wasm stages beside the program. Builds on an xwindow that keeps a press, a release and the redraw together, and sets the application icon on macOS.",
+  "version": "0.3.2",
+  "releasenote": "Builds on an xwindow whose wait yields for the other windows, so a program with several windows wakes when any of them has an event. Also keeps the web build in the ZIP and the macOS application icon.",
   "classPath": "haxe",
   "dependencies": {}
 }
